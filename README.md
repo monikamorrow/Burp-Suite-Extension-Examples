@@ -1,2 +1,2 @@
-BayThreat4
+Repository of Burp Suite starter example projects.
 ==========
