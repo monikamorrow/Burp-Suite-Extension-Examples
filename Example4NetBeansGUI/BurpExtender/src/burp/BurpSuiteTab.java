@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package burp;
 
-/**
- *
- * @author Monika Morrow
- */
 public class BurpSuiteTab extends javax.swing.JPanel {
     IBurpExtenderCallbacks mCallbacks;
     
@@ -20,6 +10,7 @@ public class BurpSuiteTab extends javax.swing.JPanel {
     public BurpSuiteTab(IBurpExtenderCallbacks callbacks) {
         mCallbacks = callbacks;
         initComponents();
+        
         mCallbacks.customizeUiComponent(jRadioButtonInScopeRequests);
         mCallbacks.customizeUiComponent(jRadioButtonAllRequests);
         
@@ -39,53 +30,131 @@ public class BurpSuiteTab extends javax.swing.JPanel {
         
         buttonGroupDefineScope.add(jRadioButtonInScopeRequests);
         buttonGroupDefineScope.add(jRadioButtonAllRequests);
+        
+        restoreSavedSettings();
     }
 
+    /**
+     * Restores any found saved settings
+     * @return 
+     */
+    private void restoreSavedSettings() {
+        boolean proxySel = false;
+        boolean repeaterSel = false;
+        boolean scannerSel = false;
+        boolean intruderSel = false;
+        boolean sequencerSel = false;
+        boolean spiderSel = false;
+        boolean scopeAllSel = false;
+        
+        if(mCallbacks.loadExtensionSetting("O_TOOL_PROXY") != null ) {
+            proxySel = getSetting("O_TOOL_PROXY");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_REPEATER") != null ) {
+            repeaterSel = getSetting("O_TOOL_REPEATER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_SCANNER") != null ) {
+            scannerSel = getSetting("O_TOOL_SCANNER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_INTRUDER") != null ) {
+            intruderSel = getSetting("O_TOOL_INTRUDER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_SEQUENCER") != null ) {
+            sequencerSel = getSetting("O_TOOL_SEQUENCER");
+        }
+        if (mCallbacks.loadExtensionSetting("O_TOOL_SPIDER") != null ) {
+            spiderSel = getSetting("O_TOOL_SPIDER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_SCOPE") != null ) {
+            scopeAllSel = getSetting("O_SCOPE");
+        }
+        jCheckBoxProxy.setSelected(proxySel);
+        jCheckBoxRepeater.setSelected(repeaterSel);
+        jCheckBoxScanner.setSelected(scannerSel);
+        jCheckBoxIntruder.setSelected(intruderSel);
+        jCheckBoxSequencer.setSelected(sequencerSel);
+        jCheckBoxSpider.setSelected(spiderSel);
+        jRadioButtonAllRequests.setSelected(scopeAllSel);
+    }
+
+    private boolean getSetting(String name) {
+        if(name.equals("O_SCOPE") && mCallbacks.loadExtensionSetting(name).equals("ALL") == true) {
+            return true;
+        }
+        else return mCallbacks.loadExtensionSetting(name).equals("ENABLED") == true;
+    }
+
+    
+    protected void saveSettings() {
+        // Clear settings
+        mCallbacks.saveExtensionSetting("O_TOOL_PROXY", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", null);
+        mCallbacks.saveExtensionSetting("O_SCOPE", null);
+        // Set any selected checkboxes in settings
+        if(jCheckBoxProxy.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_PROXY", "ENABLED");
+        }
+        if(jCheckBoxRepeater.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", "ENABLED");
+        }
+        if(jCheckBoxScanner.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", "ENABLED");
+        }
+        if(jCheckBoxIntruder.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", "ENABLED");
+        }
+        if(jCheckBoxSequencer.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", "ENABLED");
+        }
+        if(jCheckBoxSpider.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", "ENABLED");
+        }
+        if(jRadioButtonAllRequests.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_SCOPE", "ALL");
+        }
+    }
+    
     /**
      * Returns true if all response times should be calculated
      * @return 
      */
-    public boolean processAllRequests()
-    {
-        boolean retVal = false;
-        retVal = jRadioButtonAllRequests.isSelected();
-        return retVal;
+    public boolean processAllRequests() {
+        return jRadioButtonAllRequests.isSelected();
     }
     /**
      * Returns true if the requested tool is selected in the GUI
      * @param tool
      * @return 
      */
-    public boolean isToolSelected(int tool)
-    {
+    public boolean isToolSelected(int tool) {
         boolean selected = false;
-        if(tool == IBurpExtenderCallbacks.TOOL_PROXY)
-        {
-            selected = jCheckBoxProxy.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_REPEATER)
-        {
-            selected = jCheckBoxRepeater.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_SCANNER)
-        {
-            selected = jCheckBoxScanner.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_INTRUDER)
-        {
-            selected = jCheckBoxIntruder.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_SEQUENCER)
-        {
-            selected = jCheckBoxSequencer.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_SPIDER)
-        {
-            selected = jCheckBoxSpider.isSelected();
-        }
-        else if(tool == IBurpExtenderCallbacks.TOOL_TARGET)
-        {
-            // Not implemented
+        switch (tool) {
+            case IBurpExtenderCallbacks.TOOL_PROXY:
+                selected = jCheckBoxProxy.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_REPEATER:
+                selected = jCheckBoxRepeater.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SCANNER:
+                selected = jCheckBoxScanner.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_INTRUDER:
+                selected = jCheckBoxIntruder.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SEQUENCER:
+                selected = jCheckBoxSequencer.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SPIDER:
+                selected = jCheckBoxSpider.isSelected();
+                break;
+            case IBurpExtenderCallbacks.TOOL_TARGET:
+                break;
+            default:
+                break;
         }
         return selected;
     }   
@@ -206,8 +275,6 @@ public class BurpSuiteTab extends javax.swing.JPanel {
         jLabel5.getAccessibleContext().setAccessibleName("Select the configuration this extenstion applies to:");
     }// </editor-fold>//GEN-END:initComponents
 
-    private int m_stringLength;
-    private int m_charSet;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupChars;
     private javax.swing.ButtonGroup buttonGroupDefineScope;
