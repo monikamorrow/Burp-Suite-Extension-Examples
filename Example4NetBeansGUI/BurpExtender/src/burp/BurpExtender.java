@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.SwingUtilities;
 
-public class BurpExtender implements IBurpExtender, IHttpListener, ITab
+public class BurpExtender implements IBurpExtender, IHttpListener
 {
     private final String mPluginName = "Plugin Name";
     private IBurpExtenderCallbacks mCallbacks;
@@ -30,9 +30,9 @@ public class BurpExtender implements IBurpExtender, IHttpListener, ITab
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run(){
-                mTab = new BurpSuiteTab(mCallbacks);
+                mTab = new BurpSuiteTab(mPluginName, mCallbacks);
                 mCallbacks.customizeUiComponent(mTab);
-                mCallbacks.addSuiteTab(BurpExtender.this);
+                mCallbacks.addSuiteTab(mTab);
             }
         });
         mStdOut.println("Settings for " + mPluginName + " can be edited in the " + mPluginName + " tab.");
@@ -65,16 +65,6 @@ public class BurpExtender implements IBurpExtender, IHttpListener, ITab
         }
     }
 
-    @Override
-    public String getTabCaption() {
-        return mPluginName;
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return mTab;
-    }
-    
     private String doSpecialThing(IHttpRequestResponse messageInfo)
     {
         String requestStr = mHelper.bytesToString(messageInfo.getRequest());
