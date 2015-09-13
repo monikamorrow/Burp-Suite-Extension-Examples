@@ -6,20 +6,26 @@
 
 package burp;
 
+import java.awt.Component;
+
 /**
  *
  * @author Monika Morrow
  */
-public class BurpSuiteTab extends javax.swing.JPanel {
+public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     IBurpExtenderCallbacks mCallbacks;
-    
+    String tabName; 
+
     /**
      * Creates new form BurpSuiteTab
      * @param callbacks For UI Look and Feel
      */
-    public BurpSuiteTab(IBurpExtenderCallbacks callbacks) {
+    public BurpSuiteTab(String tabName, IBurpExtenderCallbacks callbacks) {
+	this.tabName = tabName;
         mCallbacks = callbacks;
-        initComponents();
+
+	initComponents();
+	
         mCallbacks.customizeUiComponent(jRadioButtonInScopeRequests);
         mCallbacks.customizeUiComponent(jRadioButtonAllRequests);
         
@@ -39,6 +45,58 @@ public class BurpSuiteTab extends javax.swing.JPanel {
         
         buttonGroupDefineScope.add(jRadioButtonInScopeRequests);
         buttonGroupDefineScope.add(jRadioButtonAllRequests);
+
+	restoreSavedSettings();
+    }
+
+    /**
+     * Restores any found saved settings
+     * @return 
+     */
+    private void restoreSavedSettings() {
+        boolean proxySel = false;
+        boolean repeaterSel = false;
+        boolean scannerSel = false;
+        boolean intruderSel = false;
+        boolean sequencerSel = false;
+        boolean spiderSel = false;
+        boolean scopeAllSel = false;
+        
+        if(mCallbacks.loadExtensionSetting("O_TOOL_PROXY") != null ) {
+            proxySel = getSetting("O_TOOL_PROXY");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_REPEATER") != null ) {
+            repeaterSel = getSetting("O_TOOL_REPEATER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_SCANNER") != null ) {
+            scannerSel = getSetting("O_TOOL_SCANNER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_INTRUDER") != null ) {
+            intruderSel = getSetting("O_TOOL_INTRUDER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_TOOL_SEQUENCER") != null ) {
+            sequencerSel = getSetting("O_TOOL_SEQUENCER");
+        }
+        if (mCallbacks.loadExtensionSetting("O_TOOL_SPIDER") != null ) {
+            spiderSel = getSetting("O_TOOL_SPIDER");
+        }
+        if(mCallbacks.loadExtensionSetting("O_SCOPE") != null ) {
+            scopeAllSel = getSetting("O_SCOPE");
+        }
+        jCheckBoxProxy.setSelected(proxySel);
+        jCheckBoxRepeater.setSelected(repeaterSel);
+        jCheckBoxScanner.setSelected(scannerSel);
+        jCheckBoxIntruder.setSelected(intruderSel);
+        jCheckBoxSequencer.setSelected(sequencerSel);
+        jCheckBoxSpider.setSelected(spiderSel);
+        jRadioButtonAllRequests.setSelected(scopeAllSel);
+    }
+
+    private boolean getSetting(String name) {
+        if(name.equals("O_SCOPE") && mCallbacks.loadExtensionSetting(name).equals("ALL") == true) {
+            return true;
+        }
+        else return mCallbacks.loadExtensionSetting(name).equals("ENABLED") == true;
     }
 
     /**
@@ -224,4 +282,14 @@ public class BurpSuiteTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButtonAllRequests;
     private javax.swing.JRadioButton jRadioButtonInScopeRequests;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public String getTabCaption() {
+	return tabName;
+    }
+
+    @Override
+    public Component getUiComponent() {
+	return this;
+    }
 }
