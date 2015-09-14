@@ -1,5 +1,7 @@
 package burp;
 
+import com.monikamorrow.burp.BurpGUIExtender;
+
 public class BurpExtender extends BurpGUIExtender {
     /**
      * Assign custom values to mPluginName and mUsageStatement
@@ -9,6 +11,7 @@ public class BurpExtender extends BurpGUIExtender {
         mPluginName = "MYPROJECT";
         mUsageStatement = "Usage statement for " + mPluginName;
     }
+    
     /**
      * Process all Burp requests/responses as indicated in the configuration tab
      * 
@@ -27,7 +30,7 @@ public class BurpExtender extends BurpGUIExtender {
             messageInfo.setComment("Request processed");
         } else {
             mStdOut.println("processSelectedMessage triggered for response");
-            messageInfo.setComment(messageInfo.getComment() + "/Response processed");
+            messageInfo.setComment(messageInfo.getComment() + "Response processed");
         }
         return messageInfo;
     }

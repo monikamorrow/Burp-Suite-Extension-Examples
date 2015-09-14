@@ -1,16 +1,23 @@
-package burp;
+package com.monikamorrow.burp;
 
-public class BurpSuiteTab extends javax.swing.JPanel {
+import burp.ITab;
+import burp.IBurpExtenderCallbacks;
+import java.awt.Component;
+
+public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     IBurpExtenderCallbacks mCallbacks;
-    
+    String tabName; 
+
     /**
      * Creates new form BurpSuiteTab
+     * @param tabName   The name displayed on the tab
      * @param callbacks For UI Look and Feel
      */
-    public BurpSuiteTab(IBurpExtenderCallbacks callbacks) {
+    public BurpSuiteTab(String tabName, IBurpExtenderCallbacks callbacks) {
+	this.tabName = tabName;
         mCallbacks = callbacks;
-        initComponents();
-        
+	initComponents();
+	
         mCallbacks.customizeUiComponent(jRadioButtonInScopeRequests);
         mCallbacks.customizeUiComponent(jRadioButtonAllRequests);
         
@@ -76,7 +83,11 @@ public class BurpSuiteTab extends javax.swing.JPanel {
         jCheckBoxSpider.setSelected(spiderSel);
         jRadioButtonAllRequests.setSelected(scopeAllSel);
     }
-
+    
+    /**
+     * Get the boolean value of the requested setting
+     * @return whether the setting was selected
+     */
     private boolean getSetting(String name) {
         if(name.equals("O_SCOPE") && mCallbacks.loadExtensionSetting(name).equals("ALL") == true) {
             return true;
@@ -84,7 +95,9 @@ public class BurpSuiteTab extends javax.swing.JPanel {
         else return mCallbacks.loadExtensionSetting(name).equals("ENABLED") == true;
     }
 
-    
+    /**
+     * Save all configured settings
+     */
     protected void saveSettings() {
         // Clear settings
         mCallbacks.saveExtensionSetting("O_TOOL_PROXY", null);
@@ -120,7 +133,7 @@ public class BurpSuiteTab extends javax.swing.JPanel {
     
     /**
      * Returns true if all response times should be calculated
-     * @return 
+     * @return true if the GUI indicates all requests should be processed
      */
     public boolean processAllRequests() {
         return jRadioButtonAllRequests.isSelected();
@@ -128,7 +141,7 @@ public class BurpSuiteTab extends javax.swing.JPanel {
     /**
      * Returns true if the requested tool is selected in the GUI
      * @param tool
-     * @return 
+     * @return whether the selected tool is selected
      */
     public boolean isToolSelected(int tool) {
         boolean selected = false;
@@ -291,4 +304,14 @@ public class BurpSuiteTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButtonAllRequests;
     private javax.swing.JRadioButton jRadioButtonInScopeRequests;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public String getTabCaption() {
+	return tabName;
+    }
+
+    @Override
+    public Component getUiComponent() {
+	return this;
+    }
 }
