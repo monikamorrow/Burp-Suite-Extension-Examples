@@ -11,7 +11,6 @@ import java.awt.Component;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.swing.SwingUtilities;
 
 public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateListener, IHttpListener, ITab {
     protected String mPluginName = "Plugin Name";
@@ -35,14 +34,9 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
         callbacks.registerHttpListener(this); // For processHttpMessage
         callbacks.registerExtensionStateListener(this); // For notification of unload extension
         
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run(){
-                mTab = new BurpSuiteTab(mPluginName, mCallbacks);
-                mCallbacks.customizeUiComponent(mTab);
-                mCallbacks.addSuiteTab(BurpGUIExtender.this);
-            }
-        });
+        mTab = new BurpSuiteTab(mPluginName, mCallbacks);
+        mCallbacks.customizeUiComponent(mTab); // Is this needed? ::TODO::
+        mCallbacks.addSuiteTab(mTab);
         mStdOut.println("Settings for " + mPluginName + " can be edited in the " + mPluginName + " tab.");
         mStdOut.println(mUsageStatement);
     }

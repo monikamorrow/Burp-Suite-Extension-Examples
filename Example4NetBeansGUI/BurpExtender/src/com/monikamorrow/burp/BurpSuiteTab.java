@@ -3,21 +3,37 @@ package com.monikamorrow.burp;
 import burp.ITab;
 import burp.IBurpExtenderCallbacks;
 import java.awt.Component;
+import javax.swing.JPanel;
 
 public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     IBurpExtenderCallbacks mCallbacks;
     String tabName; 
-
-        /**
+    JPanel userDefinedPanel;
+    
+    /**
      * Creates new form BurpSuiteTab
      * @param tabName   The name displayed on the tab
      * @param callbacks For UI Look and Feel
      */
     public BurpSuiteTab(String tabName, IBurpExtenderCallbacks callbacks) {
+        this(new JPanel(), tabName, callbacks);
+    }
+    
+    /**
+     * Creates new form BurpSuiteTab
+     * @param customPanel The panel to be added to the GUI
+     * @param tabName     The name displayed on the tab
+     * @param callbacks   For UI Look and Feel
+     */
+    public BurpSuiteTab(JPanel customPanel, String tabName, IBurpExtenderCallbacks callbacks) {
 	this.tabName = tabName;
         mCallbacks = callbacks;
-	initComponents();
         
+        userDefinedPanel = (JPanel) this.add(customPanel);
+        this.doLayout();
+        userDefinedPanel.setLocation(275, 0);
+        
+	initComponents();
         mCallbacks.customizeUiComponent(jRadioButtonInScopeRequests);
         mCallbacks.customizeUiComponent(jRadioButtonAllRequests);
         
@@ -45,7 +61,7 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
      * Restores any found saved settings
      * @return 
      */
-    private void restoreSavedSettings() {
+    public void restoreSavedSettings() {
         boolean proxySel = false;
         boolean repeaterSel = false;
         boolean scannerSel = false;
@@ -86,6 +102,7 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     
     /**
      * Get the boolean value of the requested setting
+     * @param name
      * @return whether the setting was selected
      */
     private boolean getSetting(String name) {
@@ -98,7 +115,7 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     /**
      * Save all configured settings
      */
-    protected void saveSettings() {
+    public void saveSettings() {
         // Clear settings
         mCallbacks.saveExtensionSetting("O_TOOL_PROXY", null);
         mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", null);
