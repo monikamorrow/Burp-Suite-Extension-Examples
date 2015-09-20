@@ -56,10 +56,120 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
         
         restoreSavedSettings();
     }
+    
+    /**
+     * Allows the enabling/disabling of UI tool selection elements,
+     * not every tool makes sense for every extension
+     * @param tool
+     * @param enabled 
+     */
+    public void setEnabledToolConfig(int tool, boolean enabled) {
+        switch (tool) {
+            case IBurpExtenderCallbacks.TOOL_PROXY:
+                jCheckBoxProxy.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_REPEATER:
+                jCheckBoxRepeater.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_SCANNER:
+                jCheckBoxScanner.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_INTRUDER:
+                jCheckBoxIntruder.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_SEQUENCER:
+                jCheckBoxSequencer.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_SPIDER:
+                jCheckBoxSpider.setEnabled(enabled);
+                break;
+            case IBurpExtenderCallbacks.TOOL_TARGET:
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
+     * Returns true if the requested tool is selected in the GUI
+     * @param tool
+     * @return whether the selected tool is selected
+     */
+    public boolean isToolSelected(int tool) {
+        boolean selected = false;
+        switch (tool) {
+            case IBurpExtenderCallbacks.TOOL_PROXY:
+                selected = jCheckBoxProxy.isSelected() && jCheckBoxProxy.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_REPEATER:
+                selected = jCheckBoxRepeater.isSelected() && jCheckBoxRepeater.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SCANNER:
+                selected = jCheckBoxScanner.isSelected() && jCheckBoxScanner.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_INTRUDER:
+                selected = jCheckBoxIntruder.isSelected() && jCheckBoxIntruder.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SEQUENCER:
+                selected = jCheckBoxSequencer.isSelected() && jCheckBoxSequencer.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_SPIDER:
+                selected = jCheckBoxSpider.isSelected() && jCheckBoxSpider.isEnabled();
+                break;
+            case IBurpExtenderCallbacks.TOOL_TARGET:
+                break;
+            default:
+                break;
+        }
+        return selected;
+    }  
+    
+    /**
+     * Returns true if all response times should be calculated
+     * @return true if the GUI indicates all requests should be processed
+     */
+    public boolean processAllRequests() {
+        return jRadioButtonAllRequests.isSelected();
+    }
+
+    /**
+     * Save all configured settings
+     */
+    public void saveSettings() {
+        // Clear settings
+        mCallbacks.saveExtensionSetting("O_TOOL_PROXY", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", null);
+        mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", null);
+        mCallbacks.saveExtensionSetting("O_SCOPE", null);
+        // Set any selected checkboxes in settings
+        if(jCheckBoxProxy.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_PROXY", "ENABLED");
+        }
+        if(jCheckBoxRepeater.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", "ENABLED");
+        }
+        if(jCheckBoxScanner.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", "ENABLED");
+        }
+        if(jCheckBoxIntruder.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", "ENABLED");
+        }
+        if(jCheckBoxSequencer.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", "ENABLED");
+        }
+        if(jCheckBoxSpider.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", "ENABLED");
+        }
+        if(jRadioButtonAllRequests.isSelected()) {
+            mCallbacks.saveExtensionSetting("O_SCOPE", "ALL");
+        }
+    }
+    
+    /**
      * Restores any found saved settings
-     * @return 
      */
     public void restoreSavedSettings() {
         boolean proxySel = false;
@@ -112,83 +222,8 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
         else return mCallbacks.loadExtensionSetting(name).equals("ENABLED") == true;
     }
 
-    /**
-     * Save all configured settings
-     */
-    public void saveSettings() {
-        // Clear settings
-        mCallbacks.saveExtensionSetting("O_TOOL_PROXY", null);
-        mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", null);
-        mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", null);
-        mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", null);
-        mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", null);
-        mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", null);
-        mCallbacks.saveExtensionSetting("O_SCOPE", null);
-        // Set any selected checkboxes in settings
-        if(jCheckBoxProxy.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_PROXY", "ENABLED");
-        }
-        if(jCheckBoxRepeater.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_REPEATER", "ENABLED");
-        }
-        if(jCheckBoxScanner.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_SCANNER", "ENABLED");
-        }
-        if(jCheckBoxIntruder.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_INTRUDER", "ENABLED");
-        }
-        if(jCheckBoxSequencer.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_SEQUENCER", "ENABLED");
-        }
-        if(jCheckBoxSpider.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_TOOL_SPIDER", "ENABLED");
-        }
-        if(jRadioButtonAllRequests.isSelected()) {
-            mCallbacks.saveExtensionSetting("O_SCOPE", "ALL");
-        }
-    }
-    
-    /**
-     * Returns true if all response times should be calculated
-     * @return true if the GUI indicates all requests should be processed
-     */
-    public boolean processAllRequests() {
-        return jRadioButtonAllRequests.isSelected();
-    }
-    /**
-     * Returns true if the requested tool is selected in the GUI
-     * @param tool
-     * @return whether the selected tool is selected
-     */
-    public boolean isToolSelected(int tool) {
-        boolean selected = false;
-        switch (tool) {
-            case IBurpExtenderCallbacks.TOOL_PROXY:
-                selected = jCheckBoxProxy.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_REPEATER:
-                selected = jCheckBoxRepeater.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_SCANNER:
-                selected = jCheckBoxScanner.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_INTRUDER:
-                selected = jCheckBoxIntruder.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_SEQUENCER:
-                selected = jCheckBoxSequencer.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_SPIDER:
-                selected = jCheckBoxSpider.isSelected();
-                break;
-            case IBurpExtenderCallbacks.TOOL_TARGET:
-                break;
-            default:
-                break;
-        }
-        return selected;
-    }   
-    
+
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -212,8 +247,7 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jButtonSaveSettings = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(229, 137, 0));
@@ -246,24 +280,12 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
 
         jLabel5.setText("Select the configuration this extenstion will act on:");
 
-        jLabel2.setText("jLabel2");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addContainerGap(307, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(381, Short.MAX_VALUE))
-        );
+        jButtonSaveSettings.setText("Save Settings");
+        jButtonSaveSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveSettingsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -289,51 +311,54 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
                                     .addComponent(jCheckBoxSequencer)
                                     .addComponent(jCheckBoxIntruder))))
                         .addComponent(jRadioButtonInScopeRequests)
-                        .addComponent(jRadioButtonAllRequests)))
-                .addGap(34, 34, 34)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addComponent(jRadioButtonAllRequests))
+                    .addComponent(jButtonSaveSettings))
+                .addContainerGap(430, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxProxy)
-                            .addComponent(jCheckBoxIntruder))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxRepeater)
-                            .addComponent(jCheckBoxSequencer))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxScanner)
-                            .addComponent(jCheckBoxSpider))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButtonInScopeRequests)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButtonAllRequests)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxProxy)
+                    .addComponent(jCheckBoxIntruder))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxRepeater)
+                    .addComponent(jCheckBoxSequencer))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxScanner)
+                    .addComponent(jCheckBoxSpider))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButtonInScopeRequests)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jRadioButtonAllRequests)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonSaveSettings)
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         jLabel1.getAccessibleContext().setAccessibleDescription("");
         jLabel5.getAccessibleContext().setAccessibleName("Select the configuration this extenstion applies to:");
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonSaveSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveSettingsActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jButtonSaveSettingsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupChars;
     private javax.swing.ButtonGroup buttonGroupDefineScope;
+    private javax.swing.JButton jButtonSaveSettings;
     private javax.swing.JCheckBox jCheckBoxIntruder;
     private javax.swing.JCheckBox jCheckBoxProxy;
     private javax.swing.JCheckBox jCheckBoxRepeater;
@@ -341,11 +366,9 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JCheckBox jCheckBoxSequencer;
     private javax.swing.JCheckBox jCheckBoxSpider;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButtonAllRequests;
     private javax.swing.JRadioButton jRadioButtonInScopeRequests;
     // End of variables declaration//GEN-END:variables

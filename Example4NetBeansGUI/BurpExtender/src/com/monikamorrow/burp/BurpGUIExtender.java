@@ -35,7 +35,7 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
         callbacks.registerExtensionStateListener(this); // For notification of unload extension
         
         mTab = new BurpSuiteTab(mPluginName, mCallbacks);
-        mCallbacks.customizeUiComponent(mTab); // Is this needed? ::TODO::
+        mCallbacks.customizeUiComponent(mTab);
         mCallbacks.addSuiteTab(mTab);
         mStdOut.println("Settings for " + mPluginName + " can be edited in the " + mPluginName + " tab.");
         mStdOut.println(mUsageStatement);
@@ -43,7 +43,7 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
     
     @Override
     public void extensionUnloaded() {
-        mTab.saveSettings();
+        //mTab.saveSettings();
     }
             
     @Override

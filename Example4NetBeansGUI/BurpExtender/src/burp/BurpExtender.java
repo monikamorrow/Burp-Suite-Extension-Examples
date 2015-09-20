@@ -30,7 +30,7 @@ public class BurpExtender extends BurpGUIExtender {
             messageInfo.setComment("Request processed");
         } else {
             mStdOut.println("processSelectedMessage triggered for response");
-            messageInfo.setComment(messageInfo.getComment() + "Response processed");
+            messageInfo.setComment(messageInfo.getComment() + "/Response processed");
         }
         return messageInfo;
     }
