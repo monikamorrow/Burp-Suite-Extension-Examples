@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+/GUI Utils/nbproject/private/
+/GUI Utils/dist/
+/GUI Utils/build/
