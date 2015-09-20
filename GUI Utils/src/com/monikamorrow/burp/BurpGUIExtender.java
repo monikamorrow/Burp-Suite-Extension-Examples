@@ -43,7 +43,7 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
     
     @Override
     public void extensionUnloaded() {
-        //mTab.saveSettings();
+        mTab.saveSettings();
     }
             
     @Override
