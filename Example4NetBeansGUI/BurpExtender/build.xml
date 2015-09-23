@@ -72,10 +72,10 @@
     -->
     
     <target name="-post-jar">
-	<jar jarfile="${dist.dir}/com.monikamorrow.jar"
-            basedir="${build.classes.dir}"
-            includes="com/monikamorrow/**"
-        />
+	<jar jarfile="dist/BurpExtender-combined.jar">
+	    <zipfileset src="${dist.jar}" />
+	    <zipgroupfileset dir="dist/lib" includes="*.jar" excludes="META-INF/*"/>
+	</jar>
     </target>
 
 </project>
