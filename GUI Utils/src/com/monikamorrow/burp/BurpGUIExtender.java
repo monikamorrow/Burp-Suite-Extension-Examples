@@ -19,7 +19,10 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
     protected IExtensionHelpers mHelper;
     protected PrintWriter mStdOut;
     protected PrintWriter mStdErr;
+    
     protected BurpSuiteTab mTab;
+    protected ToolsScopeComponent toolsScope;
+    protected UrlScopeComponent urlScope;
     
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
@@ -34,7 +37,16 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
         callbacks.registerHttpListener(this); // For processHttpMessage
         callbacks.registerExtensionStateListener(this); // For notification of unload extension
         
+        toolsScope = new ToolsScopeComponent(mCallbacks);
+        mCallbacks.customizeUiComponent(toolsScope);
+        
+        urlScope = new UrlScopeComponent(mCallbacks);
+        mCallbacks.customizeUiComponent(urlScope);
+        
         mTab = new BurpSuiteTab(mPluginName, mCallbacks);
+        mTab.add(toolsScope);
+        mTab.add(urlScope);
+        
         mCallbacks.customizeUiComponent(mTab);
         mCallbacks.addSuiteTab(mTab);
         mStdOut.println("Settings for " + mPluginName + " can be edited in the " + mPluginName + " tab.");
@@ -43,7 +55,8 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
     
     @Override
     public void extensionUnloaded() {
-        mTab.saveSettings();
+        toolsScope.saveSettings();
+        urlScope.saveSettings();
     }
             
     @Override
@@ -53,8 +66,8 @@ public abstract class BurpGUIExtender implements IBurpExtender, IExtensionStateL
                           messageInfo.getHttpService().getHost(),
                           messageInfo.getHttpService().getPort(), "");
         
-        if((mCallbacks.isInScope(url) || mTab.processAllRequests()) 
-            && mTab.isToolSelected(toolFlag)) {
+        if((mCallbacks.isInScope(url) || urlScope.processAllRequests()) 
+            && toolsScope.isToolSelected(toolFlag)) {
             processSelectedMessage(messageInfo, messageIsRequest);
         }
         } catch(MalformedURLException e) {
