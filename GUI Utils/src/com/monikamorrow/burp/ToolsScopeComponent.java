@@ -193,8 +193,6 @@ public class ToolsScopeComponent extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroupDefineScope = new javax.swing.ButtonGroup();
-        buttonGroupChars = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jCheckBoxProxy = new javax.swing.JCheckBox();
         jCheckBoxRepeater = new javax.swing.JCheckBox();
@@ -211,17 +209,47 @@ public class ToolsScopeComponent extends javax.swing.JPanel {
 
         jCheckBoxProxy.setSelected(true);
         jCheckBoxProxy.setText("Proxy");
+        jCheckBoxProxy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxProxyActionPerformed(evt);
+            }
+        });
 
         jCheckBoxRepeater.setSelected(true);
         jCheckBoxRepeater.setText("Repeater");
+        jCheckBoxRepeater.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxRepeaterActionPerformed(evt);
+            }
+        });
 
         jCheckBoxScanner.setText("Scanner");
+        jCheckBoxScanner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxScannerActionPerformed(evt);
+            }
+        });
 
         jCheckBoxIntruder.setText("Intruder");
+        jCheckBoxIntruder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxIntruderActionPerformed(evt);
+            }
+        });
 
         jCheckBoxSequencer.setText("Sequencer");
+        jCheckBoxSequencer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxSequencerActionPerformed(evt);
+            }
+        });
 
         jCheckBoxSpider.setText("Spider");
+        jCheckBoxSpider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxSpiderActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(229, 137, 0));
@@ -235,25 +263,20 @@ public class ToolsScopeComponent extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxProxy)
-                                    .addComponent(jCheckBoxRepeater)
-                                    .addComponent(jCheckBoxScanner))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxSpider)
-                                    .addComponent(jCheckBoxSequencer)
-                                    .addComponent(jCheckBoxIntruder))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jCheckBoxProxy)
+                            .addComponent(jCheckBoxRepeater)
+                            .addComponent(jCheckBoxScanner))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxSpider)
+                            .addComponent(jCheckBoxSequencer)
+                            .addComponent(jCheckBoxIntruder)))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,9 +304,31 @@ public class ToolsScopeComponent extends javax.swing.JPanel {
         jLabel1.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCheckBoxProxyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxProxyActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxProxyActionPerformed
+
+    private void jCheckBoxRepeaterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxRepeaterActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxRepeaterActionPerformed
+
+    private void jCheckBoxScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxScannerActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxScannerActionPerformed
+
+    private void jCheckBoxIntruderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxIntruderActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxIntruderActionPerformed
+
+    private void jCheckBoxSequencerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxSequencerActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxSequencerActionPerformed
+
+    private void jCheckBoxSpiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxSpiderActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jCheckBoxSpiderActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroupChars;
-    private javax.swing.ButtonGroup buttonGroupDefineScope;
     private javax.swing.JCheckBox jCheckBoxIntruder;
     private javax.swing.JCheckBox jCheckBoxProxy;
     private javax.swing.JCheckBox jCheckBoxRepeater;

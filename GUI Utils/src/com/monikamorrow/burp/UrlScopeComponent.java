@@ -1,8 +1,6 @@
 package com.monikamorrow.burp;
 
-import burp.ITab;
 import burp.IBurpExtenderCallbacks;
-import java.awt.Component;
 import javax.swing.JPanel;
 
 public class UrlScopeComponent extends javax.swing.JPanel {
@@ -10,8 +8,6 @@ public class UrlScopeComponent extends javax.swing.JPanel {
     
     /**
      * Creates new form BurpSuiteTab
-     * @param customPanel The panel to be added to the GUI
-     * @param tabName     The name displayed on the tab
      * @param callbacks   For UI Look and Feel
      */
     public UrlScopeComponent(IBurpExtenderCallbacks callbacks) {
@@ -95,25 +91,27 @@ public class UrlScopeComponent extends javax.swing.JPanel {
         jRadioButtonAllRequests = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButtonSaveSettings = new javax.swing.JButton();
 
         jRadioButtonInScopeRequests.setSelected(true);
         jRadioButtonInScopeRequests.setText("In scope requests");
+        jRadioButtonInScopeRequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonInScopeRequestsActionPerformed(evt);
+            }
+        });
 
         jRadioButtonAllRequests.setText("All requests");
+        jRadioButtonAllRequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonAllRequestsActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(229, 137, 0));
         jLabel3.setText("URL Scope");
 
         jLabel5.setText("Select the configuration this extention will act on:");
-
-        jButtonSaveSettings.setText("Save Settings");
-        jButtonSaveSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveSettingsActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -122,13 +120,11 @@ public class UrlScopeComponent extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addComponent(jRadioButtonInScopeRequests)
-                        .addComponent(jRadioButtonAllRequests))
-                    .addComponent(jButtonSaveSettings))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel5))
+                    .addComponent(jRadioButtonInScopeRequests)
+                    .addComponent(jRadioButtonAllRequests))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,22 +138,23 @@ public class UrlScopeComponent extends javax.swing.JPanel {
                 .addComponent(jRadioButtonInScopeRequests)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButtonAllRequests)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonSaveSettings)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel5.getAccessibleContext().setAccessibleName("Select the configuration this extenstion applies to:");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonSaveSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveSettingsActionPerformed
+    private void jRadioButtonInScopeRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonInScopeRequestsActionPerformed
         saveSettings();
-    }//GEN-LAST:event_jButtonSaveSettingsActionPerformed
+    }//GEN-LAST:event_jRadioButtonInScopeRequestsActionPerformed
+
+    private void jRadioButtonAllRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonAllRequestsActionPerformed
+        saveSettings();
+    }//GEN-LAST:event_jRadioButtonAllRequestsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupChars;
     private javax.swing.ButtonGroup buttonGroupDefineScope;
-    private javax.swing.JButton jButtonSaveSettings;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JRadioButton jRadioButtonAllRequests;
