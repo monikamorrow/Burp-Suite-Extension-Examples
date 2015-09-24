@@ -18,6 +18,9 @@ public class BurpSuiteTab extends javax.swing.JPanel implements ITab {
     public BurpSuiteTab(String tabName, IBurpExtenderCallbacks callbacks) {
 	this.tabName = tabName;
         mCallbacks = callbacks;
+        
+        mCallbacks.customizeUiComponent(this);
+        mCallbacks.addSuiteTab(this);
     }
     
     public void addComponent(JPanel customPanel) {
